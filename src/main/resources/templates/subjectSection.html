@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="/static/css/virtual-select.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/virtual-select.min.js">
+    <script type="text/javascript" href="../static/js/popupControl.js"></script>
+    <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+
+    <title>Admin Page</title>
+</head>
+<style>
+    label{
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+    /*body{*/
+    /*    display: flex;*/
+    /*    align-items: center;*/
+    /*    justify-content: center;*/
+
+    /*}*/
+    #multipleSelect{
+        max-width: 100%;
+        width: 350px;
+    }
+    .vscomp-toggle-button{
+        padding: 10px 30px 10px 10px;
+        border-radius: 5px;
+    }
+</style>
+<body>
+<div class="header" id="header">
+    <div class="container">
+        <div class="topnav-wrapper">
+            <div class="topnav-left-side">
+                <div class="nav-link-wrapper">
+                    <a href="#">Super Admin</a>
+                </div>
+            </div>
+            <div class="topnav-right-side">
+                <div class="nav-link-wrapper">
+                    <a>Name Surname</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <a th:classappend="${activeTab eq 'admins' ? 'activeTab' : 'notActiveTab'}" th:href="@{/subjects}">Admins</a>
+            <a href="#settings">Settings</a>
+        </div>
+
+<!--        <div class="list">-->
+<!--            <div class="list-items" th:each="admin : ${admins}">-->
+<!--                <p th:text="${admin.getNameSurname()}"></p>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<div class="create">
+    <button class="show-btn" id="show-btn" onclick="PopUpShow()"><b>Create</b></button>
+    <div class="popup-container" id="popup-container">
+<!--        <button class="close-btn" title="close" onclick="PopUpHide()">×</button>-->
+        <h1>New Admin</h1>
+
+        <form id="form" class="form" th:method="POST" th:action="@{/subjects}" th:object="${subject}">
+
+            <script th:inline="javascript" th:if="${#fields.hasAnyErrors()} or ${duplicated} != null or ${invalid}">
+                PopUpShow();
+            </script>
+
+            <div class="popup-wrapper">
+                <div class="half">
+                    <div id="error"></div>
+
+                    <label class="popup-label-title" for="name">Subject name<span style="color:#A30014">*</span></label>
+                    <input class="form_input" type="text" th:name="name" id="name" th:value="${#object.name}"/>
+                    <div class="error" th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}"></div>
+                    <div th:if="${duplicated}!= null" class="error">
+                        <p th:text="${duplicated}"></p>
+                    </div>
+                    <div th:if="${invalid}!= null" class="error">
+                        <p th:text="${invalid}"></p>
+                    </div>
+                </div>
+                <div>
+                    <select id="multipleSelect" multiple name="native-select" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true" >
+                        <option th:each="teacher : ${teachers}" th:value="${teacher}"
+                                th:text="${teacher.name}"></option>
+
+                        ...
+                    </select>
+                </div>
+
+                <div name="btn-div">
+                    <button type="submit" class="button-save" id="submit"><b>Save</b></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</script>
+<script type="text/javascript">
+    VirtualSelect.init({
+        ele: '#multipleSelect'
+    });
+</script>
+</body>
+</html>

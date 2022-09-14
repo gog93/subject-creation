@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/css/virtual-select.min.css" rel="stylesheet">
+    <link href="/static/js/virtual-select.min.js" rel="stylesheet">
+</head>
+<style>
+    label{
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+    body{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    #multipleSelect{
+        max-width: 100%;
+        width: 350px;
+    }
+    .vscomp-toggle-button{
+        padding: 10px 30px 10px 10px;
+        border-radius: 5px;
+    }
+</style>
+<body>
+<form  method="POST" action="/gohar" >
+    <input type="text" name="username" >
+
+
+
+
+<div>
+    <select id="multipleSelect" multiple name="native-select" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true" >
+        <option th:each="teacher : ${teachers}" th:value="${teacher}"
+                th:text="${teacher.name}"></option>
+
+        ...
+    </select>
+</div>
+    <button type="submit" class="button-save" id="submit"><b>Save</b></button>
+
+</form>
+<script type="text/javascript" src="../static/js/virtual-select.min.js">
+</script>
+<script type="text/javascript">
+    VirtualSelect.init({
+        ele: '#multipleSelect'
+    });
+</script>
+</body>
+</html>
